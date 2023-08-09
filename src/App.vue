@@ -1,11 +1,7 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+  <DefaultLayout :layout="$route.meta.layout">
     <router-view />
-  </div>
+  </DefaultLayout>
 </template>
 
 <style>
@@ -30,3 +26,10 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script>
+import DefaultLayout from "@/views/layout/DefaultLayout";
+
+export default {
+  components: { DefaultLayout }
+};
+</script>
