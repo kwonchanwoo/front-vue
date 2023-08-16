@@ -60,41 +60,43 @@ export default {
       email: "",
       password: "",
       test:'',
-      obj:{}
     };
   },
   created(){
-    let year = new Date().getFullYear();
-    let month = new Date().getMonth();
-    let day = new Date().getDay();
-    console.log(`${year}${month.toString().length>1?+month:'0'+month}${day.toString().length>1?day:'0'+day}`);
-
-
-    console.log(new Date(2023,3,4));
+    this.$store.commit('setAccessToken', '')
+    this.$store.commit('setRefreshToken', '')
+    this.$store.commit('setEmail','')
+    window.sessionStorage.clear()
   },
   methods: {
     async doLogin() {
       try {
         if(!this.doFilter()) return false;
         this.isLoading = true;
-       let response = await api.doLogin({
+       let res = await api.doLogin({
           email: this.email,
           password: this.password
         });
-        console.log(response);
 
-        if(Object.keys(this.obj).length >0){
-          throw new Error("에러입니닷");
-        }
+       if(res.status===200){
+         this.$store.commit('setAccessToken', {
+           accessToken: res.data.accessToken
+         })
+         this.$store.commit('setRefreshToken', {
+           refreshToken: res.data.refreshToken
+         })
+         this.$store.commit('setEmail', {
+           email: this.email
+         })
+
+         await this.$router.push({
+           name:'boardList'
+         })
+       }
+
       } catch (e) {
-        if(e.response.data instanceof Object){
-          console.log("객체입니다.");
-          for (const key of Object.keys(e.response.data)) {
-            alert(e.response.data[key]);
-          }
-        }else{
-          console.log("객체가 아님");
-        }
+        console.log(e);
+        alert("로그인에 실패 하였습니다.")
       } finally {
         this.isLoading = false;
       }
@@ -127,12 +129,12 @@ export default {
 </script>
 
 <style scoped>
-#LoginForm{
-  background: url(../../assets/bonobono.png)  no-repeat;
-  background-size: cover;
-  width: 100vw;
-  height: 100vh;
-}
+/*#LoginForm{*/
+/*  background: url(../../assets/bonobono.png)  no-repeat;*/
+/*  background-size: cover;*/
+/*  width: 100vw;*/
+/*  height: 100vh;*/
+/*}*/
 * {
   margin: 0;
   padding: 0;

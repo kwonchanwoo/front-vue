@@ -1,6 +1,6 @@
 const authRoutes = [
   {
-    path: `/login`,
+    path: `/`,
     name: "loginPage",
     meta: {
       layout: "FullLayout",

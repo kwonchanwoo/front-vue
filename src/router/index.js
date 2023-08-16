@@ -1,10 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import authRoutes from "@/router/modules/auth";
+import boardRoutes from "@/router/modules/board";
 
 Vue.use(VueRouter);
 
-const routes = [...authRoutes];
+const routes = [...authRoutes, ...boardRoutes];
 
 const router = new VueRouter({
   mode: "history",

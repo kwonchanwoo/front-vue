@@ -1,36 +1,42 @@
 //state
 const state = {
-    token: '',
-    userId : '',
-}
+  accessToken: "",
+  refreshToken: "",
+  email: "",
+};
 
 // mutations
 const mutations = {
-    setToken: (state, payload) => {
-        state.token = payload.token
-    },
-    setUserId: (state,payload) => {
-        state.userId = payload.userId
-    },
-}
+  setAccessToken: (state, payload) => {
+    state.accessToken = payload.accessToken;
+  },
+  setRefreshToken: (state, payload) => {
+    state.refreshToken = payload.refreshToken;
+  },
+  setEmail: (state, payload) => {
+    state.email = payload.email;
+  },
+};
 
 // actions
-const actions = {
-}
+const actions = {};
 
 // getters
 const getters = {
-    getLoginToken(state){
-        return state.token
-    },
-    getUserId(state){
-        return state.userId
-    }
-}
+  getAccessToken(state) {
+    return state.accessToken;
+  },
+  getRefreshToken(state) {
+    return state.refreshToken;
+  },
+  getEmail(state) {
+    return state.email;
+  },
+};
 
-export default{
-    state,
-    mutations,
-    actions,
-    getters
-}
+export default {
+  state,
+  mutations,
+  actions,
+  getters,
+};

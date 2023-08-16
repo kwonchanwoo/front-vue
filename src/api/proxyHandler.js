@@ -48,9 +48,9 @@ axiosInstance.interceptors.response.use(
       config: originalRequest,
       response: { status },
     } = error;
-    if (status === 403) {
-      await router.replace({ name: "Login" });
-    } else if (status === 401) {
+    if (status === 401) {
+      await router.replace({ name: "loginPage" });
+    } else if (status === 403) {
       let retryOriginalRequest = new Promise((resolve) => {
         addRefreshSubscriber(() => {
           resolve(axiosInstance(originalRequest));
@@ -61,19 +61,20 @@ axiosInstance.interceptors.response.use(
         try {
           const accessToken = await store.getters.getAccessToken;
           const refreshToken = await store.getters.getRefreshToken;
-          let {
-            data: { accessToken: newAccessToken },
-          } = await axiosInstance.post(
+          let res = await axiosInstance.post(
             `/authorize/refresh-token`, // token refresh api
             {
-              refreshToken: refreshToken,
               accessToken: accessToken,
+              refreshToken: refreshToken,
             }
           );
-          await store.commit("setAccessToken", { accessToken: newAccessToken });
+
+          await store.commit("setAccessToken", {
+            accessToken: res.data.accessToken,
+          });
         } catch (e) {
           flushSubscriber();
-          await router.replace({ name: "Login" });
+          await router.replace({ name: "loginPage" });
         }
         isTokenRefreshing = false;
         onTokenRefreshed();
