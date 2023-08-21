@@ -1,5 +1,8 @@
 <template>
   <div class="board-list">
+    <div style="float:right; margin-bottom: 25px;">
+      <button @click="add">등록하기</button>
+    </div>
     <table class="table">
       <thead>
       <tr>
@@ -10,7 +13,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item, index) in list" :key="index" class="table-row" style="cursor:pointer;">
+      <tr @click="moveDetailPage(item.id)" v-for="(item, index) in list" :key="index" class="table-row" style="cursor:pointer;">
         <td class="title-cell">
           <span class="title">{{ item.title }}</span>
           <span class="comment-count">[{{ item.commentCount }}]</span>
@@ -39,7 +42,10 @@
       <span v-for="(subItem,subIndex) in generatePageLinks"
             class="page-info"
             :key="subIndex">
-        <a style="cursor:pointer;" @click="goToPage(subItem.pageNum)" :class="{page_selected:page===subItem.pageNum}">{{ subItem.pageNum }}</a>
+        <a style="cursor:pointer;"
+           @click="goToPage(subItem.pageNum)"
+           :class="{page_selected:page===subItem.pageNum
+        ,page:page!==subItem.pageNum}">{{ subItem.pageNum }}</a>
       </span>
       <button
         class="pagination-btn"
@@ -125,6 +131,9 @@ export default {
         this.isLoading = false;
       }
     },
+    add(){
+      this.$router.push({name:'boardAdd'})
+    },
     async changePage(page) {
       this.page = page;
       await this.getBoardList();
@@ -134,8 +143,15 @@ export default {
         this.page = page;
         this.getBoardList();
       }
+    },
+    moveDetailPage(id){
+      this.$router.push({
+        name:'boardDetail',
+        query:{
+          id:id
+        }
+      })
     }
-
   }
 };
 </script>
@@ -197,7 +213,12 @@ export default {
   font-size: 16px;
   margin: 0 10px;
 }
+.page{
+  color:#888888;
+}
 .page_selected{
+  color:black;
+  font-weight:bold;
   text-decoration: underline;
 }
 </style>

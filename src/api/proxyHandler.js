@@ -30,6 +30,7 @@ let refreshSubscribers = [];
 
 const onTokenRefreshed = () => {
   refreshSubscribers.forEach((callback) => callback());
+  flushSubscriber();
 };
 
 const addRefreshSubscriber = (callback) => {
